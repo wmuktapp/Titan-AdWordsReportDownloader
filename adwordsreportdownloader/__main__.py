@@ -1,0 +1,4 @@
+import adwordsreportdownloader
+
+
+adwordsreportdownloader.main()
