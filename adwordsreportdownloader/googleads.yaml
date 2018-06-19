@@ -1,8 +1,0 @@
-adwords:
-  developer_token: cf7m1SrjJXv8cw3ODye8Kw
-  client_id: 896634169911-9k7eu90m0qae2m1ur1st4gl31rkm16u5.apps.googleusercontent.com
-  client_secret: -T6l2Kp1pljlNJatFyT8MdBX
-  refresh_token: 1/aZy7S9GSLHqClpGvTV32a_bJc4O1NbZjOVUAJtynqWOmPOE4vZ7V2Y1TMKUxcfrJ
-
-proxy_config:
-  disable_certificate_validation: True
