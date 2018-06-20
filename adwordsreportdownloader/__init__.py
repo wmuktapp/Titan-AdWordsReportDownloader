@@ -218,7 +218,7 @@ class FlowManager(object):
         adwords_config["client_id"] = self.client_id
         adwords_config["client_secret"] = self.client_secret
         adwords_config["refresh_token"] = self.refresh_token
-        self.client = adwords.AdWordsClient.LoadFromString(yaml_file)
+        self.client = adwords.AdWordsClient.LoadFromString(yaml.dump(yaml_file))
 
     def get_report_streams(self):
         """Connect to the AdWords API and return a dict mapping account IDs to report streams."""
@@ -385,8 +385,8 @@ def main(developer_token, client_id, client_secret, refresh_token, report_string
                 report_config["dateRangeType"] = "CUSTOM_DATE"
                 if load_date is None:
                     load_date = (datetime.datetime.now() - datetime.timedelta(days=1)).date()
-                start_date = (load_date - datetime.timedelta(days=previous_days)).strftime("%Y%m%d")
-                report_config["selector"]["dateRange"] = {"min": "\"%s\"" % load_date, "max": "\"%s\"" % start_date}
+                start_date = (load_date - datetime.timedelta(days=previous_days)).strftime("%Y-%m-%d")
+                report_config["selector"]["dateRange"] = {"min": start_date, "max": load_date}
             flow_manager.report_config = report_config
         except KeyError as error:
             flow_manager.logger.exception(error)
