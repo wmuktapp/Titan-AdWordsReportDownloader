@@ -107,3 +107,4 @@ venv.bak/
 ### CUSTOM ###
 
 .idea/
+output.log
