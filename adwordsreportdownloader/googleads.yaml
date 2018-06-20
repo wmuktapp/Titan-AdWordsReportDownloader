@@ -1,0 +1,2 @@
+proxy_config:
+  disable_certificate_validation: True

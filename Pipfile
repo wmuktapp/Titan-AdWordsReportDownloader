@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 googleads = "*"
 "e1839a8" = {path = ".", editable = true}
+pyyaml = "*"
 
 [dev-packages]
 
