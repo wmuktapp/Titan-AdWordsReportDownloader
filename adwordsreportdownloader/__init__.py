@@ -336,7 +336,8 @@ class TitanFlowManager(FlowManager):
 @click.option("-o", "--ftp-file-name", help="The name of the file to write to FTP. If --ftp-destination is not "
               "provided, this is ignored")
 @click.option("-l", "--load-date", type=_DateType(), help="The end date in the format YYYY-MM-DD that the report date "
-              "range should reference. This is only added to the JSON if there is no dateRangeType present.")
+              "range should reference. This is only added to the JSON if there is no dateRangeType present. Defaults "
+              "to yesterday")
 @click.option("-d", "--previous-days", type=int, default=90, help="The amount of days to fetch data for. The start "
               "date is equal to (--load-date - previous_days) - 1. The start date is only added to the JSON if there "
               "is no dateRangeType. Defaults to 90.")
@@ -362,7 +363,7 @@ def main(developer_token, client_id, client_secret, refresh_token, report_string
     8. ftp_file_name (tuple): The name of the file to write to FTP. If --ftp-destination is not provided, this is
     ignored
     9. load_date (datetime.date): The end date that the report date range should reference. This is only added to the
-    JSON if there is no dateRangeType present
+    JSON if there is no dateRangeType present. Defaults to yesterday
     10. previous_days (int): The amount of days to fetch data for. The start date is equal to
     (--load-date - previous_days) - 1. The start date is only added to the JSON if there is no dateRangeType. Defaults
     to 90.
@@ -386,7 +387,7 @@ def main(developer_token, client_id, client_secret, refresh_token, report_string
                 if load_date is None:
                     load_date = (datetime.datetime.now() - datetime.timedelta(days=1)).date()
                 start_date = (load_date - datetime.timedelta(days=previous_days)).strftime("%Y-%m-%d")
-                report_config["selector"]["dateRange"] = {"min": start_date, "max": load_date}
+                report_config["selector"]["dateRange"] = {"min": start_date, "max": str(load_date)}
             flow_manager.report_config = report_config
         except KeyError as error:
             flow_manager.logger.exception(error)
