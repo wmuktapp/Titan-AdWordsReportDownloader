@@ -310,10 +310,11 @@ class TitanFlowManager(FlowManager):
         1. streams (list): the list of streams to upload
 
         """
-        self.acquire_program.file_name_format = "{DATALAKE_DATA_SET_NAME}_{DATALAKE_LOAD_DATE}_{account_id}"
+        name_format = "{DATALAKE_DATA_SET_NAME}_{DATALAKE_LOAD_DATE}_{account_id}"
         for account_id, stream in streams.items():
             self.logger.info("Uploading file for account ID, %s to blob storage" % account_id)
-            self.acquire_program.create_blob_from_stream(stream, account_id=account_id)
+            blob_name = self.acquire_program.get_blob_name(name_format=name_format, account_id=account_id)
+            self.acquire_program.create_blob_from_stream(stream, blob_name)
 
 
 @click.command()
