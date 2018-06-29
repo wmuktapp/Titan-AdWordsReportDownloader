@@ -299,7 +299,7 @@ class TitanFlowManager(FlowManager):
         self.report_config = report_config
         self.account_ids = account_ids
 
-        from datalake import utilities
+        from titan import utilities
         self.acquire_program = utilities.AcquireProgram()
         self.logger = self.acquire_program.logger
 
