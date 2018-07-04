@@ -86,11 +86,12 @@ class _ReportStreams(object):
         for stream in streams:
             self.streams.append({
                 "fp": stream,
-                "bytes_read": 0,
+                "bytes_read": 0,   # This is the bytes read from the file
                 "header_found": False
             })
         self.current_stream_index = 0
         self.end_of_streams_reached = False
+        self.total_bytes_returned = 0  # This is the total bytes returned
 
     def read(self, block_size):
         """Read and return a block_size chunk from the next report file, handling the removal of headers from subsequent
@@ -122,6 +123,7 @@ class _ReportStreams(object):
                     self.end_of_streams_reached = True
                 else:
                     self.current_stream_index += 1
+        self.total_bytes_returned += total_bytes_read
         return data_to_return
 
     def process_header(self, data):
@@ -142,6 +144,10 @@ class _ReportStreams(object):
                 header_byte_count = len(data)
             data = data[header_byte_count:]
         return data
+
+    def tell(self):
+        """Return the total bytes read."""
+        return self.total_bytes_returned
 
 
 class FlowManager(object):
@@ -311,7 +317,7 @@ class TitanFlowManager(FlowManager):
         1. streams (list): the list of streams to upload
 
         """
-        name_format = "{ExecutionDataSetName}_{ExecutionLoadDate}_{account_id}"
+        name_format = "{ExecutionDataSetName}_{ExecutionLoadDate}_{account_id}.csv"
         for account_id, stream in streams.items():
             self.logger.info("Uploading file for account ID, %s to blob storage" % account_id)
             blob_name = self.acquire_program.get_blob_name(name_format=name_format, account_id=account_id)
