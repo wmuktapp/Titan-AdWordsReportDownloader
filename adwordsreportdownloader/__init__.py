@@ -79,7 +79,7 @@ class _ReportStreams(object):
         read method.
 
         Positional Arguments:
-        1. streams (list): the list of streams to be read
+        1. streams (iterable): the list of streams to be read
 
         """
         self.streams = []
@@ -222,15 +222,16 @@ class FlowManager(object):
 
     def get_report_streams(self):
         """Connect to the AdWords API and return a dict mapping account IDs to report streams."""
-        streams = []
+        streams = {}
         # The default library is "zeep" and it makes a request. The googleads API doesn't send our disable SSL option
         # to this library and so this step fails with SSL error
         self.client.soap_impl = "suds"
         downloader = self.client.GetReportDownloader(version="v201802")
         for account_id in self.account_ids:
             self.client.SetClientCustomerId(account_id)
-            streams.append(downloader.DownloadReportAsStream(self.report_config, skip_report_header=True,
-                                                             skip_report_summary=True, include_zero_impressions=False))
+            streams[account_id] = downloader.DownloadReportAsStream(self.report_config, skip_report_header=True,
+                                                                    skip_report_summary=True,
+                                                                    include_zero_impressions=False)
         return streams
 
     def run(self):
@@ -263,7 +264,7 @@ class FlowManager(object):
                 ftp.prot_p()
             ftp.cwd(path)
             try:
-                ftp.storbinary("STOR %s" % self.ftp_file_name, _ReportStreams(streams), blocksize=1250000)
+                ftp.storbinary("STOR %s" % self.ftp_file_name, _ReportStreams(streams.values()), blocksize=1250000)
             except ftplib.all_errors as error:
                 try:
                     ftp.delete(os.path.join(path, self.ftp_file_name))
