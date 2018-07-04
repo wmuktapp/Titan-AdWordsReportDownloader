@@ -321,7 +321,7 @@ class TitanFlowManager(FlowManager):
         for account_id, stream in streams.items():
             self.logger.info("Uploading file for account ID, %s to blob storage" % account_id)
             blob_name = self.acquire_program.get_blob_name(name_format=name_format, account_id=account_id)
-            self.acquire_program.create_blob_from_stream(stream, blob_name=blob_name, use_byte_buffer=False)
+            self.acquire_program.create_blob_from_stream(stream, blob_name=blob_name, use_byte_buffer=True)
 
 
 @click.command()
