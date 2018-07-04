@@ -311,7 +311,7 @@ class TitanFlowManager(FlowManager):
         1. streams (list): the list of streams to upload
 
         """
-        name_format = "{TITAN_DATA_SET_NAME}_{TITAN_LOAD_DATE}_{account_id}"
+        name_format = "{ExecutionDataSetName}_{ExecutionLoadDate}_{account_id}"
         for account_id, stream in streams.items():
             self.logger.info("Uploading file for account ID, %s to blob storage" % account_id)
             blob_name = self.acquire_program.get_blob_name(name_format=name_format, account_id=account_id)
