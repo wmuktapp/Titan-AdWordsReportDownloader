@@ -232,7 +232,7 @@ class FlowManager(object):
         # The default library is "zeep" and it makes a request. The googleads API doesn't send our disable SSL option
         # to this library and so this step fails with SSL error
         self.client.soap_impl = "suds"
-        downloader = self.client.GetReportDownloader(version="v201802")
+        downloader = self.client.GetReportDownloader(version="v201809")
         for account_id in self.account_ids:
             self.client.SetClientCustomerId(account_id)
             streams[account_id] = downloader.DownloadReportAsStream(self.report_config, skip_report_header=True,
